@@ -8,6 +8,7 @@ use App\Services\TodoService;
 use App\Http\Requests\TodoRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Request;
 
 class TodoController extends Controller
 {
@@ -64,7 +65,7 @@ class TodoController extends Controller
     {
         try {
 
-            $this->ensureOwner($todo->workspace_id);
+            $this->ensureUserBelongsToWorkspace($todo->workspace_id);
 
             return response()->json([
                 'success' => true,
@@ -104,7 +105,7 @@ class TodoController extends Controller
     {
         try {
 
-            $this->ensureOwner($todo->workspace);
+            $this->ensureOwner($todo->workspace_id);
 
             $this->todoService->delete($todo);
 
@@ -132,17 +133,17 @@ class TodoController extends Controller
             throw new \Exception('Unauthorized access to this workspace');
         }
     }
-    private function ensureOwner(Workspace $workspace): void
+    private function ensureOwner(int $workspaceId): void
     {
         $role = Auth::user()
             ->workspaces()
-            ->where('workspace_id', $workspace->id)
+            ->where('workspaces.id', $workspaceId)
             ->first()
             ?->pivot
             ?->role;
 
-          if (!in_array($role, ['owner', 'editor'])) {
+        if (!in_array($role, ['owner', 'editor'])) {
             throw new \Exception('Only owner and editor can perform this action');
         }
     }
-}
+    }
