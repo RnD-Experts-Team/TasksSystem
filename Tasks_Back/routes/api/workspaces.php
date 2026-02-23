@@ -7,7 +7,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('workspaces', WorkspaceController::class)
         ->except(['index']);
-
+    
      Route::post('workspaces/{workspaceId}/users', 
         [WorkspaceController::class, 'addUser']);
 

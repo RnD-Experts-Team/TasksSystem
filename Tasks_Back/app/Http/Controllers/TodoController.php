@@ -43,7 +43,7 @@ class TodoController extends Controller
     {
         try {
 
-            $this->ensureUserBelongsToWorkspace($request->workspace_id);
+            $this->ensureOwner($request->workspace_id);
 
             $todo = $this->todoService->create($request->validated());
 
@@ -64,7 +64,7 @@ class TodoController extends Controller
     {
         try {
 
-            $this->ensureUserBelongsToWorkspace($todo->workspace_id);
+            $this->ensureOwner($todo->workspace_id);
 
             return response()->json([
                 'success' => true,
@@ -83,7 +83,7 @@ class TodoController extends Controller
     {
         try {
 
-            $this->ensureUserBelongsToWorkspace($todo->workspace_id);
+            $this->ensureOwner($todo->workspace_id);
 
             $updated = $this->todoService->update($todo, $request->validated());
 
@@ -104,7 +104,7 @@ class TodoController extends Controller
     {
         try {
 
-            $this->ensureUserBelongsToWorkspace($todo->workspace_id);
+            $this->ensureOwner($todo->workspace);
 
             $this->todoService->delete($todo);
 
@@ -130,6 +130,19 @@ class TodoController extends Controller
 
         if (!$exists) {
             throw new \Exception('Unauthorized access to this workspace');
+        }
+    }
+    private function ensureOwner(Workspace $workspace): void
+    {
+        $role = Auth::user()
+            ->workspaces()
+            ->where('workspace_id', $workspace->id)
+            ->first()
+            ?->pivot
+            ?->role;
+
+          if (!in_array($role, ['owner', 'editor'])) {
+            throw new \Exception('Only owner and editor can perform this action');
         }
     }
 }
