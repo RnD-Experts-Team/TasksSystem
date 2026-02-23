@@ -36,10 +36,10 @@ return new class extends Migration {
             $t->index('rater_id');
         });
 
-        Schema::table('final_ratings', function (Blueprint $t) {
-            $t->index('user_id');
-            $t->index(['period_start', 'period_end']);
-        });
+        // Schema::table('final_ratings', function (Blueprint $t) {
+        //     $t->index('user_id');
+        //     $t->index(['period_start', 'period_end']);
+        // });
 
         Schema::table('stakeholder_ratings', function (Blueprint $t) {
             $t->index('project_id');

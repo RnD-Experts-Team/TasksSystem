@@ -27,4 +27,7 @@ Route::prefix('')->group(function () {
     require __DIR__ . '/api/profile.php';
     require __DIR__ . '/api/dashboard.php';
     require __DIR__ . '/api/final-ratings.php';
+    require __DIR__ . '/api/workspaces.php'; 
+    require __DIR__ . '/api/todos.php';
+
 });
