@@ -1,13 +1,13 @@
-version: '3.8'
+version: "3.8"
 
 services:
   backend:
-    build: 
+    build:
       context: ./Tasks_Back
       dockerfile: Dockerfile
     container_name: tasks_backend
     ports:
-      - "2676:80" #main 2654,pizza 2676
+      - "2654:80" #main 2654,pizza 2676
     volumes:
       - ./Tasks_Back:/var/www/html
     restart: unless-stopped
@@ -17,7 +17,7 @@ services:
     container_name: tasks_frontend
     command: httpd -f -v -p 80 -h /var/www/html
     ports:
-      - "2820:80" #main 2876,pizza 2820
+      - "2876:80" #main 2876,pizza 2820
     volumes:
       - ./Tasks_Front/dist:/var/www/html:ro
     restart: unless-stopped
@@ -43,7 +43,7 @@ services:
     container_name: tasks_reverb
     command: sh -lc "php artisan reverb:start --host=0.0.0.0 --port=6031"
     ports:
-      - "6031:6031"   # main 6001, pizza 6031
+      - "6001:6031" # main 6001, pizza 6031
     volumes:
       - ./Tasks_Back:/var/www/html
     restart: unless-stopped
