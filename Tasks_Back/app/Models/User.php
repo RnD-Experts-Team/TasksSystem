@@ -58,6 +58,13 @@ class User extends Authenticatable
 
 
     protected $guard_name = 'sanctum';
+    public function workspaces()
+    {
+        return $this->belongsToMany(Workspace::class)
+            ->withPivot('role')
+            ->withTimestamps();
+    }
+
 
     public function projects(): HasMany
     {
@@ -65,11 +72,11 @@ class User extends Authenticatable
     }
 
     public function assignedTasks(): BelongsToMany
-{
-    return $this->belongsToMany(Task::class)
-                ->withPivot('percentage')
-                ->withTimestamps();
-}
+        {
+            return $this->belongsToMany(Task::class)
+                        ->withPivot('percentage')
+                        ->withTimestamps();
+        }
     public function getAvatarLocalPathAttribute(): ?string
     {
         if (! $this->avatar_path) {
@@ -156,4 +163,6 @@ public function activeClockSession()
                 ->whereIn('status', ['active', 'on_break'])
                 ->latest('clock_in_utc');
 }
+
+
 }
