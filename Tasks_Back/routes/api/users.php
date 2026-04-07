@@ -15,7 +15,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::middleware(['permission:view users'])->group(function () {
         Route::get('users', [UserController::class, 'index'])->name('users.index');
         Route::get('users/{id}', [UserController::class, 'show'])->name('users.show');
-        Route::get('users/{id}/with-projects', [UserController::class, 'showWithProjects'])->name('users.with-projects');
+        // Route::get('users/{id}/with-projects', [UserController::class, 'showWithProjects'])->name('users.with-projects');
         Route::get('users/{id}/roles-and-permissions', [UserController::class, 'getRolesAndPermissions'])->name('users.roles-permissions');
         Route::get('users/{id}/projects', [UserController::class, 'getProjects'])->name('users.projects');
         Route::get('users/{id}/task-assignments', [UserController::class, 'getTaskAssignments'])->name('users.task-assignments');
