@@ -439,337 +439,337 @@
                         "$ref": "#/components/responses/ValidationError"
                     }
                 }
-            },
-            "/final-ratings/calculate": {
-                "post": {
-                    "tags": ["Final Ratings"],
-                    "summary": "Calculate final ratings",
-                    "operationId": "calculateFinalRatings",
-                    "security": [
-                        {
-                            "bearerAuth": []
-                        }
-                    ],
-                    "requestBody": {
-                        "$ref": "#/components/requestBodies/FinalRatingCalculationRequest"
-                    },
-                    "responses": {
-                        "200": {
-                            "$ref": "#/components/responses/FinalRatingCalculationSuccess"
-                        },
-                        "401": {
-                            "$ref": "#/components/responses/Unauthorized"
-                        },
-                        "403": {
-                            "$ref": "#/components/responses/Forbidden"
-                        },
-                        "422": {
-                            "$ref": "#/components/responses/FinalRatingValidationError"
-                        },
-                        "500": {
-                            "$ref": "#/components/responses/InternalServerError"
-                        }
+            }
+        },
+        "/final-ratings/calculate": {
+            "post": {
+                "tags": ["Final Ratings"],
+                "summary": "Calculate final ratings",
+                "operationId": "calculateFinalRatings",
+                "security": [
+                    {
+                        "bearerAuth": []
                     }
-                }
-            },
-            "/final-ratings/export-pdf": {
-                "post": {
-                    "tags": ["Final Ratings"],
-                    "summary": "Export final ratings PDFs as ZIP",
-                    "operationId": "exportFinalRatingsPdf",
-                    "security": [
-                        {
-                            "bearerAuth": []
-                        }
-                    ],
-                    "requestBody": {
-                        "$ref": "#/components/requestBodies/FinalRatingCalculationRequest"
-                    },
-                    "responses": {
-                        "200": {
-                            "$ref": "#/components/responses/ZipDownloadResponse"
-                        },
-                        "401": {
-                            "$ref": "#/components/responses/Unauthorized"
-                        },
-                        "403": {
-                            "$ref": "#/components/responses/Forbidden"
-                        },
-                        "422": {
-                            "$ref": "#/components/responses/FinalRatingValidationError"
-                        },
-                        "500": {
-                            "$ref": "#/components/responses/InternalServerError"
-                        }
-                    }
-                }
-            },
-            "/final-ratings/configs": {
-                "get": {
-                    "tags": ["Final Ratings"],
-                    "summary": "List final rating configurations",
-                    "operationId": "listFinalRatingConfigs",
-                    "security": [
-                        {
-                            "bearerAuth": []
-                        }
-                    ],
-                    "responses": {
-                        "200": {
-                            "$ref": "#/components/responses/FinalRatingConfigListSuccess"
-                        },
-                        "401": {
-                            "$ref": "#/components/responses/Unauthorized"
-                        },
-                        "403": {
-                            "$ref": "#/components/responses/Forbidden"
-                        }
-                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/FinalRatingCalculationRequest"
                 },
-                "post": {
-                    "tags": ["Final Ratings"],
-                    "summary": "Create final rating configuration",
-                    "operationId": "createFinalRatingConfig",
-                    "security": [
-                        {
-                            "bearerAuth": []
-                        }
-                    ],
-                    "requestBody": {
-                        "$ref": "#/components/requestBodies/CreateFinalRatingConfigRequest"
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/FinalRatingCalculationSuccess"
                     },
-                    "responses": {
-                        "201": {
-                            "$ref": "#/components/responses/FinalRatingConfigCreatedSuccess"
-                        },
-                        "401": {
-                            "$ref": "#/components/responses/Unauthorized"
-                        },
-                        "403": {
-                            "$ref": "#/components/responses/Forbidden"
-                        },
-                        "422": {
-                            "$ref": "#/components/responses/FinalRatingValidationError"
-                        },
-                        "500": {
-                            "$ref": "#/components/responses/InternalServerError"
-                        }
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/FinalRatingValidationError"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
                     }
                 }
-            },
-            "/final-ratings/configs/active": {
-                "get": {
-                    "tags": ["Final Ratings"],
-                    "summary": "Get active final rating configuration",
-                    "operationId": "getActiveFinalRatingConfig",
-                    "security": [
-                        {
-                            "bearerAuth": []
-                        }
-                    ],
-                    "responses": {
-                        "200": {
-                            "$ref": "#/components/responses/FinalRatingConfigSuccess"
-                        },
-                        "401": {
-                            "$ref": "#/components/responses/Unauthorized"
-                        },
-                        "403": {
-                            "$ref": "#/components/responses/Forbidden"
-                        },
-                        "404": {
-                            "$ref": "#/components/responses/NoActiveFinalRatingConfig"
-                        }
+            }
+        },
+        "/final-ratings/export-pdf": {
+            "post": {
+                "tags": ["Final Ratings"],
+                "summary": "Export final ratings PDFs as ZIP",
+                "operationId": "exportFinalRatingsPdf",
+                "security": [
+                    {
+                        "bearerAuth": []
                     }
-                }
-            },
-            "/final-ratings/configs/default-structure": {
-                "get": {
-                    "tags": ["Final Ratings"],
-                    "summary": "Get default final rating config structure",
-                    "operationId": "getDefaultFinalRatingStructure",
-                    "security": [
-                        {
-                            "bearerAuth": []
-                        }
-                    ],
-                    "responses": {
-                        "200": {
-                            "$ref": "#/components/responses/FinalRatingDefaultStructureSuccess"
-                        },
-                        "401": {
-                            "$ref": "#/components/responses/Unauthorized"
-                        },
-                        "403": {
-                            "$ref": "#/components/responses/Forbidden"
-                        }
-                    }
-                }
-            },
-            "/final-ratings/configs/{id}": {
-                "get": {
-                    "tags": ["Final Ratings"],
-                    "summary": "Get final rating configuration by ID",
-                    "operationId": "getFinalRatingConfig",
-                    "security": [
-                        {
-                            "bearerAuth": []
-                        }
-                    ],
-                    "parameters": [
-                        {
-                            "$ref": "#/components/parameters/FinalRatingConfigIdPath"
-                        }
-                    ],
-                    "responses": {
-                        "200": {
-                            "$ref": "#/components/responses/FinalRatingConfigSuccess"
-                        },
-                        "401": {
-                            "$ref": "#/components/responses/Unauthorized"
-                        },
-                        "403": {
-                            "$ref": "#/components/responses/Forbidden"
-                        },
-                        "404": {
-                            "$ref": "#/components/responses/FinalRatingConfigNotFound"
-                        }
-                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/FinalRatingCalculationRequest"
                 },
-                "put": {
-                    "tags": ["Final Ratings"],
-                    "summary": "Update final rating configuration",
-                    "operationId": "updateFinalRatingConfig",
-                    "security": [
-                        {
-                            "bearerAuth": []
-                        }
-                    ],
-                    "parameters": [
-                        {
-                            "$ref": "#/components/parameters/FinalRatingConfigIdPath"
-                        }
-                    ],
-                    "requestBody": {
-                        "$ref": "#/components/requestBodies/UpdateFinalRatingConfigRequest"
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/ZipDownloadResponse"
                     },
-                    "responses": {
-                        "200": {
-                            "$ref": "#/components/responses/FinalRatingConfigUpdatedSuccess"
-                        },
-                        "401": {
-                            "$ref": "#/components/responses/Unauthorized"
-                        },
-                        "403": {
-                            "$ref": "#/components/responses/Forbidden"
-                        },
-                        "404": {
-                            "$ref": "#/components/responses/FinalRatingConfigNotFound"
-                        },
-                        "422": {
-                            "$ref": "#/components/responses/FinalRatingValidationError"
-                        },
-                        "500": {
-                            "$ref": "#/components/responses/InternalServerError"
-                        }
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/FinalRatingValidationError"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
                     }
+                }
+            }
+        },
+        "/final-ratings/configs": {
+            "get": {
+                "tags": ["Final Ratings"],
+                "summary": "List final rating configurations",
+                "operationId": "listFinalRatingConfigs",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/FinalRatingConfigListSuccess"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Final Ratings"],
+                "summary": "Create final rating configuration",
+                "operationId": "createFinalRatingConfig",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/CreateFinalRatingConfigRequest"
                 },
-                "delete": {
-                    "tags": ["Final Ratings"],
-                    "summary": "Delete final rating configuration",
-                    "operationId": "deleteFinalRatingConfig",
-                    "security": [
-                        {
-                            "bearerAuth": []
-                        }
-                    ],
-                    "parameters": [
-                        {
-                            "$ref": "#/components/parameters/FinalRatingConfigIdPath"
-                        }
-                    ],
-                    "responses": {
-                        "200": {
-                            "$ref": "#/components/responses/FinalRatingConfigDeletedSuccess"
-                        },
-                        "400": {
-                            "$ref": "#/components/responses/FinalRatingConfigDeleteBlocked"
-                        },
-                        "401": {
-                            "$ref": "#/components/responses/Unauthorized"
-                        },
-                        "403": {
-                            "$ref": "#/components/responses/Forbidden"
-                        },
-                        "404": {
-                            "$ref": "#/components/responses/FinalRatingConfigNotFound"
-                        },
-                        "500": {
-                            "$ref": "#/components/responses/InternalServerError"
-                        }
-                    }
-                }
-            },
-            "/final-ratings/configs/{id}/activate": {
-                "post": {
-                    "tags": ["Final Ratings"],
-                    "summary": "Activate final rating configuration",
-                    "operationId": "activateFinalRatingConfig",
-                    "security": [
-                        {
-                            "bearerAuth": []
-                        }
-                    ],
-                    "parameters": [
-                        {
-                            "$ref": "#/components/parameters/FinalRatingConfigIdPath"
-                        }
-                    ],
-                    "responses": {
-                        "200": {
-                            "$ref": "#/components/responses/FinalRatingConfigActivatedSuccess"
-                        },
-                        "401": {
-                            "$ref": "#/components/responses/Unauthorized"
-                        },
-                        "403": {
-                            "$ref": "#/components/responses/Forbidden"
-                        },
-                        "404": {
-                            "$ref": "#/components/responses/FinalRatingConfigNotFound"
-                        },
-                        "500": {
-                            "$ref": "#/components/responses/InternalServerError"
-                        }
-                    }
-                }
-            },
-            "/final-ratings/calculate-weighted-ratings-sos": {
-                "post": {
-                    "tags": ["Final Ratings"],
-                    "summary": "Calculate weighted ratings SOS",
-                    "operationId": "calculateWeightedRatingsSOS",
-                    "security": [
-                        {
-                            "bearerAuth": []
-                        }
-                    ],
-                    "requestBody": {
-                        "$ref": "#/components/requestBodies/WeightedRatingsSOSRequest"
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/FinalRatingConfigCreatedSuccess"
                     },
-                    "responses": {
-                        "200": {
-                            "$ref": "#/components/responses/WeightedRatingsSOSSuccess"
-                        },
-                        "401": {
-                            "$ref": "#/components/responses/Unauthorized"
-                        },
-                        "403": {
-                            "$ref": "#/components/responses/Forbidden"
-                        },
-                        "422": {
-                            "$ref": "#/components/responses/ValidationError"
-                        }
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/FinalRatingValidationError"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    }
+                }
+            }
+        },
+        "/final-ratings/configs/active": {
+            "get": {
+                "tags": ["Final Ratings"],
+                "summary": "Get active final rating configuration",
+                "operationId": "getActiveFinalRatingConfig",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/FinalRatingConfigSuccess"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NoActiveFinalRatingConfig"
+                    }
+                }
+            }
+        },
+        "/final-ratings/configs/default-structure": {
+            "get": {
+                "tags": ["Final Ratings"],
+                "summary": "Get default final rating config structure",
+                "operationId": "getDefaultFinalRatingStructure",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/FinalRatingDefaultStructureSuccess"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    }
+                }
+            }
+        },
+        "/final-ratings/configs/{id}": {
+            "get": {
+                "tags": ["Final Ratings"],
+                "summary": "Get final rating configuration by ID",
+                "operationId": "getFinalRatingConfig",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/FinalRatingConfigIdPath"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/FinalRatingConfigSuccess"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/FinalRatingConfigNotFound"
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Final Ratings"],
+                "summary": "Update final rating configuration",
+                "operationId": "updateFinalRatingConfig",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/FinalRatingConfigIdPath"
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/UpdateFinalRatingConfigRequest"
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/FinalRatingConfigUpdatedSuccess"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/FinalRatingConfigNotFound"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/FinalRatingValidationError"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Final Ratings"],
+                "summary": "Delete final rating configuration",
+                "operationId": "deleteFinalRatingConfig",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/FinalRatingConfigIdPath"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/FinalRatingConfigDeletedSuccess"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/FinalRatingConfigDeleteBlocked"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/FinalRatingConfigNotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    }
+                }
+            }
+        },
+        "/final-ratings/configs/{id}/activate": {
+            "post": {
+                "tags": ["Final Ratings"],
+                "summary": "Activate final rating configuration",
+                "operationId": "activateFinalRatingConfig",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/FinalRatingConfigIdPath"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/FinalRatingConfigActivatedSuccess"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/FinalRatingConfigNotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    }
+                }
+            }
+        },
+        "/final-ratings/calculate-weighted-ratings-sos": {
+            "post": {
+                "tags": ["Final Ratings"],
+                "summary": "Calculate weighted ratings SOS",
+                "operationId": "calculateWeightedRatingsSOS",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/WeightedRatingsSOSRequest"
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/WeightedRatingsSOSSuccess"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
                     }
                 }
             }
@@ -1301,235 +1301,235 @@
                         "$ref": "#/components/responses/HelpRequestNotFoundOrCompleted"
                     }
                 }
-            },
-            "/projects/{project}/kanban": {
-                "get": {
-                    "tags": ["Kanban"],
-                    "summary": "Get project kanban board",
-                    "operationId": "getProjectKanban",
-                    "security": [
-                        {
-                            "bearerAuth": []
-                        }
-                    ],
-                    "parameters": [
-                        {
-                            "$ref": "#/components/parameters/ProjectIdPath"
-                        }
-                    ],
-                    "responses": {
-                        "200": {
-                            "$ref": "#/components/responses/ProjectKanbanSuccess"
-                        },
-                        "401": {
-                            "$ref": "#/components/responses/Unauthorized"
-                        },
-                        "403": {
-                            "$ref": "#/components/responses/Forbidden"
-                        },
-                        "404": {
-                            "$ref": "#/components/responses/ProjectNotFound"
-                        }
+            }
+        },
+        "/projects/{project}/kanban": {
+            "get": {
+                "tags": ["Kanban"],
+                "summary": "Get project kanban board",
+                "operationId": "getProjectKanban",
+                "security": [
+                    {
+                        "bearerAuth": []
                     }
-                }
-            },
-            "/tasks/{task}/move-section": {
-                "post": {
-                    "tags": ["Kanban"],
-                    "summary": "Move task to another section",
-                    "operationId": "moveTaskToSection",
-                    "security": [
-                        {
-                            "bearerAuth": []
-                        }
-                    ],
-                    "parameters": [
-                        {
-                            "$ref": "#/components/parameters/TaskIdPath"
-                        }
-                    ],
-                    "requestBody": {
-                        "$ref": "#/components/requestBodies/MoveTaskToSectionRequest"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ProjectIdPath"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/ProjectKanbanSuccess"
                     },
-                    "responses": {
-                        "200": {
-                            "$ref": "#/components/responses/KanbanTaskMutationSuccess"
-                        },
-                        "401": {
-                            "$ref": "#/components/responses/Unauthorized"
-                        },
-                        "403": {
-                            "$ref": "#/components/responses/Forbidden"
-                        },
-                        "404": {
-                            "$ref": "#/components/responses/KanbanTaskNotFound"
-                        },
-                        "422": {
-                            "$ref": "#/components/responses/ValidationError"
-                        }
-                    }
-                }
-            },
-            "/tasks/{task}/move-status": {
-                "post": {
-                    "tags": ["Kanban"],
-                    "summary": "Move task to another status",
-                    "operationId": "moveTaskStatus",
-                    "security": [
-                        {
-                            "bearerAuth": []
-                        }
-                    ],
-                    "parameters": [
-                        {
-                            "$ref": "#/components/parameters/TaskIdPath"
-                        }
-                    ],
-                    "requestBody": {
-                        "$ref": "#/components/requestBodies/MoveTaskStatusRequest"
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
                     },
-                    "responses": {
-                        "200": {
-                            "$ref": "#/components/responses/KanbanTaskMutationSuccess"
-                        },
-                        "401": {
-                            "$ref": "#/components/responses/Unauthorized"
-                        },
-                        "403": {
-                            "$ref": "#/components/responses/Forbidden"
-                        },
-                        "404": {
-                            "$ref": "#/components/responses/KanbanTaskNotFound"
-                        },
-                        "422": {
-                            "$ref": "#/components/responses/ValidationError"
-                        }
-                    }
-                }
-            },
-            "/permissions": {
-                "get": {
-                    "tags": ["Permissions"],
-                    "summary": "List permissions",
-                    "operationId": "listPermissions",
-                    "security": [
-                        {
-                            "bearerAuth": []
-                        }
-                    ],
-                    "responses": {
-                        "200": {
-                            "$ref": "#/components/responses/PermissionListSuccess"
-                        },
-                        "401": {
-                            "$ref": "#/components/responses/Unauthorized"
-                        },
-                        "403": {
-                            "$ref": "#/components/responses/Forbidden"
-                        }
-                    }
-                }
-            },
-            "/permissions/{id}": {
-                "get": {
-                    "tags": ["Permissions"],
-                    "summary": "Get permission by ID",
-                    "operationId": "getPermission",
-                    "security": [
-                        {
-                            "bearerAuth": []
-                        }
-                    ],
-                    "parameters": [
-                        {
-                            "$ref": "#/components/parameters/PermissionIdPath"
-                        }
-                    ],
-                    "responses": {
-                        "200": {
-                            "$ref": "#/components/responses/PermissionSuccess"
-                        },
-                        "401": {
-                            "$ref": "#/components/responses/Unauthorized"
-                        },
-                        "403": {
-                            "$ref": "#/components/responses/Forbidden"
-                        },
-                        "404": {
-                            "$ref": "#/components/responses/PermissionNotFound"
-                        }
-                    }
-                }
-            },
-            "/me": {
-                "get": {
-                    "tags": ["Profile"],
-                    "summary": "Get authenticated user profile",
-                    "operationId": "getMyProfile",
-                    "security": [
-                        {
-                            "bearerAuth": []
-                        }
-                    ],
-                    "responses": {
-                        "200": {
-                            "$ref": "#/components/responses/MyProfileSuccess"
-                        },
-                        "401": {
-                            "$ref": "#/components/responses/Unauthorized"
-                        }
-                    }
-                }
-            },
-            "/profile": {
-                "post": {
-                    "tags": ["Profile"],
-                    "summary": "Update authenticated user profile",
-                    "operationId": "updateMyProfile",
-                    "security": [
-                        {
-                            "bearerAuth": []
-                        }
-                    ],
-                    "requestBody": {
-                        "$ref": "#/components/requestBodies/UpdateMyProfileRequest"
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
                     },
-                    "responses": {
-                        "200": {
-                            "$ref": "#/components/responses/MyProfileUpdatedSuccess"
-                        },
-                        "401": {
-                            "$ref": "#/components/responses/Unauthorized"
-                        },
-                        "422": {
-                            "$ref": "#/components/responses/ValidationError"
-                        }
+                    "404": {
+                        "$ref": "#/components/responses/ProjectNotFound"
                     }
                 }
-            },
-            "/profile/password": {
-                "post": {
-                    "tags": ["Profile"],
-                    "summary": "Update authenticated user password",
-                    "operationId": "updateMyPassword",
-                    "security": [
-                        {
-                            "bearerAuth": []
-                        }
-                    ],
-                    "requestBody": {
-                        "$ref": "#/components/requestBodies/UpdateMyPasswordRequest"
+            }
+        },
+        "/tasks/{task}/move-section": {
+            "post": {
+                "tags": ["Kanban"],
+                "summary": "Move task to another section",
+                "operationId": "moveTaskToSection",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/TaskIdPath"
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/MoveTaskToSectionRequest"
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/KanbanTaskMutationSuccess"
                     },
-                    "responses": {
-                        "200": {
-                            "$ref": "#/components/responses/MyPasswordUpdatedSuccess"
-                        },
-                        "401": {
-                            "$ref": "#/components/responses/Unauthorized"
-                        },
-                        "422": {
-                            "$ref": "#/components/responses/ValidationError"
-                        }
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/KanbanTaskNotFound"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                }
+            }
+        },
+        "/tasks/{task}/move-status": {
+            "post": {
+                "tags": ["Kanban"],
+                "summary": "Move task to another status",
+                "operationId": "moveTaskStatus",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/TaskIdPath"
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/MoveTaskStatusRequest"
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/KanbanTaskMutationSuccess"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/KanbanTaskNotFound"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                }
+            }
+        },
+        "/permissions": {
+            "get": {
+                "tags": ["Permissions"],
+                "summary": "List permissions",
+                "operationId": "listPermissions",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/PermissionListSuccess"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    }
+                }
+            }
+        },
+        "/permissions/{id}": {
+            "get": {
+                "tags": ["Permissions"],
+                "summary": "Get permission by ID",
+                "operationId": "getPermission",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/PermissionIdPath"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/PermissionSuccess"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/PermissionNotFound"
+                    }
+                }
+            }
+        },
+        "/me": {
+            "get": {
+                "tags": ["Profile"],
+                "summary": "Get authenticated user profile",
+                "operationId": "getMyProfile",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/MyProfileSuccess"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    }
+                }
+            }
+        },
+        "/profile": {
+            "post": {
+                "tags": ["Profile"],
+                "summary": "Update authenticated user profile",
+                "operationId": "updateMyProfile",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/UpdateMyProfileRequest"
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/MyProfileUpdatedSuccess"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
+                    }
+                }
+            }
+        },
+        "/profile/password": {
+            "post": {
+                "tags": ["Profile"],
+                "summary": "Update authenticated user password",
+                "operationId": "updateMyPassword",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/UpdateMyPasswordRequest"
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/MyPasswordUpdatedSuccess"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationError"
                     }
                 }
             }
