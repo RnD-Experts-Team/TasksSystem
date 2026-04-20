@@ -614,9 +614,72 @@
             }
           }
         }
+      },   
+      "post": {
+        "summary": "Create a new todo",
+        "tags": ["Todos"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TodoRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Todo created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Todo"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to create todo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "headers": {
+          "Authorization": {
+            "description": "Bearer token for user authentication",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Bearer {JWT Token}"
+            }
+          },
+          "Content-Type": {
+            "description": "Content type for the request body",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "application/json"
+            }
+          }
+        }
       }
     },
-    "/todos/{todo}": {
+    "/workspaces/{workspaceId}/todos/{todo}": {
       "get": {
         "summary": "Get a todo by ID",
         "tags": ["Todos"],
@@ -806,70 +869,7 @@
       }
     },
      "/todos/": {
-       
-      "post": {
-        "summary": "Create a new todo",
-        "tags": ["Todos"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TodoRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Todo created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Todo"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Failed to create todo",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": { "type": "boolean" },
-                    "message": { "type": "string" }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "headers": {
-          "Authorization": {
-            "description": "Bearer token for user authentication",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "Bearer {JWT Token}"
-            }
-          },
-          "Content-Type": {
-            "description": "Content type for the request body",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "application/json"
-            }
-          }
-        }
-      }
+    
     }
     
   },
@@ -921,8 +921,7 @@
       "TodoRequest": {
         "type": "object",
         "properties": {
-          "workspace_id": { "type": "integer" },
-          "parent_id": { "type": "integer" },
+           "parent_id": { "type": "integer" },
           "title": { "type": "string" },
           "status": { "type": "string", "enum": ["pending", "inprogress", "completed"] },
           "due_date": { "type": "string", "format": "date-time" }
