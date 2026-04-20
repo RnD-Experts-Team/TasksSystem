@@ -22,11 +22,11 @@ class WorkspaceService
     public function create(array $data): Workspace
     {
         return DB::transaction(function () use ($data) {
-
+        
             $workspace = Workspace::create([
                 'name' => $data['name'],
                 'description' => $data['description'] ?? null,
-            ]);
+            ]);     
 
             Auth::user()->workspaces()->attach($workspace->id, [
                 'role' => 'owner',

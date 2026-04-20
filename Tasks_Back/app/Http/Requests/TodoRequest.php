@@ -14,8 +14,7 @@ class TodoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'workspace_id' => 'required|exists:workspaces,id',
-            'parent_id' => 'nullable|exists:todos,id',
+             'parent_id' => 'nullable|exists:todos,id',
             'title' => 'required|string|max:255',
             'status' => 'nullable|in:pending,inprogress,completed',
             'due_date' => 'nullable|date',
