@@ -54,7 +54,6 @@ class AssetService
         try {
             [$encoded, $extension] = match ($type) {
                 'favicon' => [$this->encodeFavicon($source), 'png'],
-                'og' => [$this->encodeFitted($source, 1200, 630, 'webp'), 'webp'],
                 default => [$this->encodeFitted($source, 512, 512, 'webp'), 'webp'],
             };
         } finally {

@@ -14,7 +14,7 @@ return [
     */
     'hash_key' => env('ROADMAP_HASH_KEY'),
 
-    /* Public SPA origin: used for canonical URLs, RSS links, sitemap and OG tags. */
+    /* Public SPA origin: used for the links inside the changelog RSS feed and to recognise internal links in markdown. */
     'frontend_url' => env('ROADMAP_FRONTEND_URL', 'https://tasks.rdexperts.tech'),
 
     /*
@@ -60,7 +60,6 @@ return [
             'logo' => null,
             'logo_dark' => null,
             'favicon' => null,
-            'og' => null,
         ],
         'features' => [
             'roadmap' => true,
@@ -84,11 +83,6 @@ return [
             'posts_per_ip_day' => 15,
             'comments_per_visitor_hour' => 10,
             'tokens_per_ip_day' => 20,
-        ],
-        'seo' => [
-            'indexable' => true,
-            'title_suffix' => '',
-            'meta_description' => '',
         ],
     ],
 

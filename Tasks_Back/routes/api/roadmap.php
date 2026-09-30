@@ -6,7 +6,6 @@
 //
 //   /api/public/roadmap/...   unauthenticated, throttled, generic-error guarded (anonymous visitors)
 //   /api/roadmap/admin/...    Sanctum + role_or_permission:admin|<permission> (staff console)
-//   /api/seo/...              HTML preview shell for crawlers / link scrapers (reached via nginx)
 //
 // Middleware notes:
 //  - Throttling uses our own RoadmapThrottle middleware (NOT RateLimiter::for) so it keeps
@@ -19,7 +18,6 @@
 
 use App\Http\Controllers\Roadmap\Admin;
 use App\Http\Controllers\Roadmap\PublicApi;
-use App\Http\Controllers\Roadmap\Seo\SeoController;
 use App\Http\Middleware\Roadmap\ForceJson;
 use App\Http\Middleware\Roadmap\PublicApiGuard;
 use App\Http\Middleware\Roadmap\PublicCache;
@@ -94,20 +92,6 @@ Route::prefix('public/roadmap')
         Route::get('/me/state', [PublicApi\MeController::class, 'state'])
             ->middleware([$visitor('optional'), $throttle('read')]);
     });
-
-// ════════════════════════════════════════════════════════════════════
-// SEO PREVIEW SHELL  (HTML for crawlers; reached through the frontend nginx)
-// Not IP-throttled: every request comes from our own nginx, so they rely on caching.
-// ════════════════════════════════════════════════════════════════════
-Route::prefix('seo')->group(function () use ($slug) {
-    Route::get('/sitemap.xml', [SeoController::class, 'sitemap']);
-    Route::get('/roadmap', [SeoController::class, 'home']);
-    Route::get('/roadmap/{board}', [SeoController::class, 'board'])->where('board', $slug);
-    Route::get('/roadmap/{board}/roadmap', [SeoController::class, 'boardRoadmap'])->where('board', $slug);
-    Route::get('/roadmap/{board}/p/{numberSlug}', [SeoController::class, 'post'])->where('board', $slug);
-    Route::get('/changelog', [SeoController::class, 'changelogIndex']);
-    Route::get('/changelog/{slug}', [SeoController::class, 'changelogEntry'])->where('slug', $slug);
-});
 
 // ════════════════════════════════════════════════════════════════════
 // ADMIN API  (staff console)

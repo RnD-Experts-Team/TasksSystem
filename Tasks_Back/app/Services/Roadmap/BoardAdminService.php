@@ -83,7 +83,7 @@ class BoardAdminService
                 $new = $this->uniqueSlug($data['slug'], $board->name, $board->id);
                 if ($new !== $old) {
                     $board->slug = $new;
-                    // Old links keep working through the SEO shell.
+                    // Remember the old slug so the previous link can still be resolved.
                     SlugRedirect::updateOrCreate(
                         ['kind' => 'board', 'old_key' => $old],
                         ['target_id' => $board->id, 'created_at' => now()]

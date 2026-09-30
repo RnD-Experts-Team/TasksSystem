@@ -13,8 +13,13 @@ class RssService
 
     public function __construct(
         private SettingsService $settings,
-        private SeoService $seo,
     ) {}
+
+    /** Absolute URL on the public site (the SPA origin). */
+    private function siteUrl(string $path): string
+    {
+        return rtrim((string) config('roadmap.frontend_url'), '/').'/'.ltrim($path, '/');
+    }
 
     public function changelogFeed(?string $boardSlug = null): string
     {
@@ -37,7 +42,7 @@ class RssService
         $w->startElement('channel');
 
         $w->writeElement('title', $site['name'].' - Changelog');
-        $w->writeElement('link', $this->seo->url('/changelog'));
+        $w->writeElement('link', $this->siteUrl('/changelog'));
         $w->writeElement('description', $site['tagline'] ?: 'Latest updates, improvements and fixes.');
         $w->writeElement('language', 'en');
         if ($entries->isNotEmpty()) {
@@ -45,13 +50,13 @@ class RssService
         }
 
         $w->startElement('atom:link');
-        $w->writeAttribute('href', $this->seo->url('/changelog/feed.xml'));
+        $w->writeAttribute('href', url('/api/public/roadmap/changelog/feed.xml'));
         $w->writeAttribute('rel', 'self');
         $w->writeAttribute('type', 'application/rss+xml');
         $w->endElement();
 
         foreach ($entries as $entry) {
-            $link = $this->seo->url('/changelog/'.$entry->slug);
+            $link = $this->siteUrl('/changelog/'.$entry->slug);
 
             $w->startElement('item');
             $w->writeElement('title', $entry->title);
