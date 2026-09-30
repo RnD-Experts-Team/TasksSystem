@@ -5,7 +5,7 @@ namespace App\Services\Roadmap;
 /**
  * Shape, defaults and validation rules of the roadmap settings JSON.
  *
- * Stored blob (per scope): site / branding / features / moderation / limits / seo.
+ * Stored blob (per scope): site / branding / features / moderation / limits.
  * Branding asset paths are stored as branding.logo, logo_dark, favicon, og (disk-relative)
  * and exposed to the admin API as *_path keys. Uploads own those keys: PUT never writes them.
  */
@@ -30,7 +30,6 @@ class SettingsSchema
         'logo' => 'logo_path',
         'logo_dark' => 'logo_dark_path',
         'favicon' => 'favicon_path',
-        'og' => 'og_image_path',
     ];
 
     /** Upload type => storage key. */
@@ -38,7 +37,6 @@ class SettingsSchema
         'logo' => 'logo',
         'logo_dark' => 'logo_dark',
         'favicon' => 'favicon',
-        'og' => 'og',
     ];
 
     /** @return array<string, array<string, mixed>> */
@@ -73,7 +71,6 @@ class SettingsSchema
                 'logo' => null,
                 'logo_dark' => null,
                 'favicon' => null,
-                'og' => null,
             ],
             'features' => [
                 'roadmap' => true,
@@ -97,11 +94,6 @@ class SettingsSchema
                 'posts_per_ip_day' => 15,
                 'comments_per_visitor_hour' => 10,
                 'tokens_per_ip_day' => 20,
-            ],
-            'seo' => [
-                'indexable' => true,
-                'title_suffix' => '',
-                'meta_description' => '',
             ],
         ];
     }
@@ -159,11 +151,6 @@ class SettingsSchema
             'data.limits.posts_per_ip_day' => ['sometimes', 'integer', 'min:1', 'max:10000'],
             'data.limits.comments_per_visitor_hour' => ['sometimes', 'integer', 'min:1', 'max:1000'],
             'data.limits.tokens_per_ip_day' => ['sometimes', 'integer', 'min:1', 'max:10000'],
-
-            'data.seo' => ['sometimes', 'array'],
-            'data.seo.indexable' => ['sometimes', 'boolean'],
-            'data.seo.title_suffix' => ['sometimes', 'nullable', 'string', 'max:60'],
-            'data.seo.meta_description' => ['sometimes', 'nullable', 'string', 'max:160'],
         ];
 
         if ($scope === self::GLOBAL_SCOPE) {

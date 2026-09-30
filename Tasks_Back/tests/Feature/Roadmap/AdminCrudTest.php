@@ -729,11 +729,10 @@ class AdminCrudTest extends RoadmapTestCase
         $this->assertSame('PNE Roadmap', $data['settings']['site']['name']);
         $this->assertSame('#e11d48', $data['settings']['branding']['primary']);
         $this->assertArrayHasKey('logo_path', $data['settings']['branding']);
-        $this->assertArrayHasKey('og_image_path', $data['settings']['branding']);
         $this->assertArrayNotHasKey('logo', $data['settings']['branding']);
-        $this->assertSame(['site', 'branding', 'features', 'moderation', 'limits', 'seo'], array_keys($data['settings']));
+        $this->assertSame(['site', 'branding', 'features', 'moderation', 'limits'], array_keys($data['settings']));
         $this->assertArrayHasKey('--primary', $data['theme']['light']);
-        $this->assertSame(['logo_url' => null, 'logo_dark_url' => null, 'favicon_url' => null, 'og_image_url' => null], $data['assets']);
+        $this->assertSame(['logo_url' => null, 'logo_dark_url' => null, 'favicon_url' => null], $data['assets']);
 
         $saved = $this->putJson($this->api('/settings'), ['scope' => 'global', 'data' => [
             'site' => ['name' => 'Acme Feedback', 'tagline' => '', 'footer_links' => [['label' => 'Docs', 'url' => 'https://acme.test/docs']]],
@@ -741,7 +740,7 @@ class AdminCrudTest extends RoadmapTestCase
             'moderation' => ['blocklist' => ['Viagra', 'viagra', ' casino '], 'max_links_post' => 1],
             'limits' => ['votes_per_ip_day' => 200],
             'features' => ['comments' => false],
-            'seo' => ['indexable' => false, 'title_suffix' => '| Acme', 'meta_description' => 'Hello'],
+            'seo' => ['indexable' => false],
             'evil' => ['x' => 1],
         ]])->assertOk()->json('data');
 
@@ -759,7 +758,7 @@ class AdminCrudTest extends RoadmapTestCase
         $this->assertSame(30, $s['limits']['votes_per_visitor_day'], 'untouched keys keep their default');
         $this->assertFalse($s['features']['comments']);
         $this->assertTrue($s['features']['roadmap']);
-        $this->assertFalse($s['seo']['indexable']);
+        $this->assertArrayNotHasKey('seo', $s, 'removed settings groups are ignored');
         $this->assertArrayNotHasKey('evil', $s);
         $this->assertSame('1.25rem', $saved['theme']['radius']);
 
@@ -786,7 +785,6 @@ class AdminCrudTest extends RoadmapTestCase
         $put(['limits' => ['votes_per_visitor_day' => 0]])->assertStatus(422);
         $put(['limits' => ['votes_per_visitor_day' => 'many']])->assertStatus(422);
         $put(['features' => ['rss' => 'maybe']])->assertStatus(422);
-        $put(['seo' => ['meta_description' => str_repeat('d', 161)]])->assertStatus(422);
         $put(['site' => ['footer_links' => [['label' => 'x', 'url' => 'javascript:alert(1)']]]])->assertStatus(422);
         $put(['site' => ['contact_url' => 'javascript:alert(1)']])->assertStatus(422);
         $put(['site' => ['default_board_slug' => 'missing-board']])->assertStatus(422);
@@ -891,7 +889,7 @@ class AdminCrudTest extends RoadmapTestCase
         $this->assertNull($this->getJson($this->api('/settings'))->json('data.settings.branding.logo_path'));
     }
 
-    public function test_favicon_and_og_asset_sizes(): void
+    public function test_favicon_asset_size(): void
     {
         Storage::fake('public');
         $this->asAdmin();
@@ -902,18 +900,6 @@ class AdminCrudTest extends RoadmapTestCase
         $this->assertSame('image/png', $info['mime']);
         $this->assertSame([64, 64], [$info[0], $info[1]]);
         $this->assertStringEndsWith('.png', $fav);
-
-        $og = $this->post($this->api('/settings/asset'), ['type' => 'og', 'file' => UploadedFile::fake()->image('o.jpg', 1800, 1200)], ['Accept' => 'application/json'])
-            ->assertCreated()->json('data.path');
-        $info = getimagesizefromstring(Storage::disk('public')->get($og));
-        $this->assertSame('image/webp', $info['mime']);
-        $this->assertLessThanOrEqual(1200, $info[0]);
-        $this->assertLessThanOrEqual(630, $info[1]);
-        $this->assertSame(945, $info[0], '1800x1200 fits 1200x630 at 945x630');
-
-        $og2 = $this->post($this->api('/settings/asset'), ['type' => 'og', 'file' => UploadedFile::fake()->image('o.png', 800, 400)], ['Accept' => 'application/json'])->json('data.path');
-        $info = getimagesizefromstring(Storage::disk('public')->get($og2));
-        $this->assertSame([800, 400], [$info[0], $info[1]], 'images are never scaled up');
     }
 
     public function test_asset_upload_rejects_bad_files(): void
@@ -927,6 +913,7 @@ class AdminCrudTest extends RoadmapTestCase
         $post(['type' => 'favicon', 'file' => UploadedFile::fake()->image('big.png', 600, 600)])->assertStatus(422)->assertJsonValidationErrors('file');
         $post(['type' => 'logo', 'file' => UploadedFile::fake()->image('heavy.png', 100, 100)->size(2048)])->assertStatus(422);
         // Wrong type / no file / unknown type.
+        $post(['type' => 'og', 'file' => UploadedFile::fake()->image('a.png')])->assertStatus(422)->assertJsonValidationErrors('type');
         $post(['type' => 'banner', 'file' => UploadedFile::fake()->image('a.png')])->assertStatus(422)->assertJsonValidationErrors('type');
         $post(['type' => 'logo'])->assertStatus(422)->assertJsonValidationErrors('file');
 

@@ -231,14 +231,13 @@ class SettingsService
         return $path ? Storage::disk('public')->url($path) : null;
     }
 
-    /** @param array<string, mixed> $branding @return array{logo_url:?string,logo_dark_url:?string,favicon_url:?string,og_image_url:?string} */
+    /** @param array<string, mixed> $branding @return array{logo_url:?string,logo_dark_url:?string,favicon_url:?string} */
     public function assets(array $branding): array
     {
         return [
             'logo_url' => $this->assetUrl($branding['logo'] ?? null),
             'logo_dark_url' => $this->assetUrl($branding['logo_dark'] ?? null),
             'favicon_url' => $this->assetUrl($branding['favicon'] ?? null),
-            'og_image_url' => $this->assetUrl($branding['og'] ?? null),
         ];
     }
 

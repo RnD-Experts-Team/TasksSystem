@@ -2,9 +2,9 @@
 
 Branch: `feature/roadmap` (repo `RnD-Experts-Team/TasksSystem`, app in `Tasks_Back/`).
 
-Adds a public product roadmap (boards, feature requests, anonymous voting, comments, roadmap columns, changelog + RSS), a staff admin API (moderation, statuses, tags, merge, branding, analytics) and a crawler preview shell for link sharing and Google. Everything is additive: 14 new tables, new routes under `/api/public/roadmap`, `/api/roadmap/admin` and `/api/seo`. No existing table, model or route is changed.
+Adds a public product roadmap (boards, feature requests, anonymous voting, comments, roadmap columns, changelog + RSS), a staff admin API (moderation, statuses, tags, merge, branding, analytics) for an internal audience (no search-engine or link-preview support, by design). Everything is additive: 14 new tables and new routes under `/api/public/roadmap` and `/api/roadmap/admin`. No existing table, model or route is changed.
 
-Deploy the **backend first**, then the frontend (see the `task-system` repo's `ROADMAP_DEPLOYMENT.md`), then add the nginx rule.
+Deploy the **backend first**, then the frontend (see the `task-system` repo's `ROADMAP_DEPLOYMENT.md`). No nginx change is needed.
 
 > **Do not skip the checklist in §8.** The two things missed on the Work Sessions deploy (the seeder and build-time variables) have direct equivalents here.
 
@@ -14,7 +14,7 @@ Deploy the **backend first**, then the frontend (see the `task-system` repo's `R
 
 Existing files touched (2): `Tasks_Back/routes/api.php` (one `require` line) and `Tasks_Back/public/openapi.json` (additive paths/schemas). Optional: `.env.example` (documents the new variables) and `composer.json` (makes `league/commonmark` an explicit dependency — it was already installed transitively).
 
-New: `config/roadmap.php`, migrations `2026_10_01_0000{01..14}_create_roadmap_*`, `app/Models/Roadmap/*`, `app/Enums/Roadmap/*`, `app/Services/Roadmap/*`, `app/Support/Roadmap/*`, `app/Http/{Controllers,Requests,Resources,Middleware}/Roadmap/*`, `app/Events/Roadmap/*`, `app/Jobs/Roadmap/*`, `app/Console/Commands/Roadmap/*`, `resources/views/roadmap/seo/*`, `routes/api/roadmap.php`, seeders `RoadmapPermissionSeeder` and `RoadmapDemoSeeder`, `tests/Feature/Roadmap/*`.
+New: `config/roadmap.php`, migrations `2026_10_01_0000{01..14}_create_roadmap_*`, `app/Models/Roadmap/*`, `app/Enums/Roadmap/*`, `app/Services/Roadmap/*`, `app/Support/Roadmap/*`, `app/Http/{Controllers,Requests,Resources,Middleware}/Roadmap/*`, `app/Events/Roadmap/*`, `app/Jobs/Roadmap/*`, `app/Console/Commands/Roadmap/*`, `routes/api/roadmap.php`, seeders `RoadmapPermissionSeeder` and `RoadmapDemoSeeder`, `tests/Feature/Roadmap/*`.
 
 ## 2. New database objects
 
@@ -35,13 +35,13 @@ Access rules:
 #   php -r 'echo bin2hex(random_bytes(32)), PHP_EOL;'
 ROADMAP_HASH_KEY=<64 hex chars>
 
-# Public site origin: used for canonical URLs, sitemap, RSS links and OG tags.
+# Public site origin: used for the links inside the changelog RSS feed.
 ROADMAP_FRONTEND_URL=https://tasks.rdexperts.tech
 
 # Must be false in production. (The public routes hide errors even if it is true, but do not rely on that.)
 APP_DEBUG=false
 
-# Correct absolute URL of the API host: uploaded logos / OG images are served from APP_URL/storage/...
+# Correct absolute URL of the API host: uploaded logos are served from APP_URL/storage/...
 APP_URL=https://tasksbackend.rdexperts.tech
 
 # Optional
@@ -109,7 +109,7 @@ If a CDN such as Cloudflare is added later: set `ROADMAP_IP_HEADER=CF-Connecting
 ## 6. Verify
 
 ```bash
-docker compose exec backend php artisan route:list --path=roadmap        # public + admin + seo routes
+docker compose exec backend php artisan route:list --path=roadmap        # public + admin routes
 docker compose exec backend php artisan tinker --execute="echo \Spatie\Permission\Models\Permission::where('name','like','%roadmap%')->orWhere('name','manage changelog')->count();"   # expect 4
 ```
 
@@ -122,12 +122,7 @@ curl -s https://tasksbackend.rdexperts.tech/api/public/roadmap/boards
 
 Anonymous flow smoke (proves tokens, throttling and moderation): request a visitor token (`POST /visitor`), start a form (`POST /forms/post/start`), wait the returned `min_seconds`, submit a post — expect `201` with `moderation_state: "pending"` and confirm it is **absent** from `GET /boards/{slug}/posts` until approved in the admin console.
 
-SEO shell smoke:
-
-```bash
-curl -s -A Googlebot https://tasksbackend.rdexperts.tech/api/seo/roadmap | grep -Ei "<title>|canonical|og:title|ld\+json"
-curl -sI https://tasksbackend.rdexperts.tech/api/seo/sitemap.xml
-```
+RSS smoke: `curl -s https://tasksbackend.rdexperts.tech/api/public/roadmap/changelog/feed.xml | head` returns an `<rss>` document.
 
 Scalar docs (`/api-docs`) should list the new **Roadmap** tags after the OpenAPI merge.
 
@@ -152,7 +147,7 @@ docker compose exec backend php artisan permission:cache-reset
 | `moderate roadmap` | approve/reject/spam posts and comments, visitors, bans, bulk removal, analytics |
 | `manage roadmap` | boards, statuses, tags, edit/delete posts, status changes, official replies, merge, roadmap board |
 | `manage changelog` | changelog entries |
-| `manage roadmap settings` | branding, logo uploads, limits, blocklist, SEO settings |
+| `manage roadmap settings` | branding, logo uploads, limits, blocklist |
 
 ## 8. First-deploy checklist (tick every box)
 
@@ -163,8 +158,7 @@ docker compose exec backend php artisan permission:cache-reset
 - [ ] Two different networks produce different `first_ip_hash` values (§5)
 - [ ] `GET /api/public/roadmap/config` returns JSON; anonymous test post is `pending` and invisible until approved
 - [ ] At least one board exists (create it in the admin console, or run the demo seeder) and moderation defaults are what you want per board
-- [ ] `curl -A Googlebot .../api/seo/roadmap` returns a real title and canonical
-- [ ] Frontend deployed with `robots.txt`, `og-default.png` and the nginx rule (see the frontend guide)
+- [ ] Frontend deployed (see the frontend guide)
 - [ ] After the first week: review **Roadmap → Visitors & Abuse** for suspicious IPs/visitors and tune the limits in Settings
 
 ## 9. Operations
@@ -184,4 +178,4 @@ docker compose exec backend php artisan permission:cache-reset
 git checkout <previous-branch-or-tag> && docker compose up -d --build backend queue
 ```
 
-The two touched existing files (`routes/api.php`, `public/openapi.json`) revert with the checkout. Remove the nginx bot rule on the frontend host if you roll back the frontend too.
+The two touched existing files (`routes/api.php`, `public/openapi.json`) revert with the checkout.
