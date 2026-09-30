@@ -30,5 +30,6 @@ Route::prefix('')->group(function () {
     require __DIR__ . '/api/workspaces.php'; 
     require __DIR__ . '/api/todos.php';
     require __DIR__ . '/api/work-sessions.php';
+    require __DIR__ . '/api/roadmap.php';
 
 });
